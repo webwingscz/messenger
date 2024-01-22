@@ -20,12 +20,14 @@ class MessengerLogger extends AbstractLogger
 	}
 
 	/**
+	 * @param mixed $level
+	 * @param Stringable|string $message
 	 * @param mixed[] $context
 	 */
-	public function log(mixed $level, Stringable|string $message, array $context = []): void
+	public function log($level, $message, array $context = []): void
 	{
 		$logger = PHP_SAPI === 'cli' ? $this->consoleLogger : $this->httpLogger;
-		$logger->log($level, $message, $context);
+		$logger->log($level, (string) $message, $context);
 	}
 
 }

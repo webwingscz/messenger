@@ -16,8 +16,12 @@ class QueryBus
 		$this->bus = $bus;
 	}
 
-	public function query(object $query): mixed
+	/**
+	 * @return mixed
+	 */
+	public function query(object $query)
 	{
+		/** @var HandledStamp|null $stamp */
 		$stamp = $this->bus->dispatch($query)->last(HandledStamp::class);
 
 		if ($stamp === null) {

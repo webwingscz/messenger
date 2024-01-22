@@ -109,7 +109,11 @@ final class BuilderMan
 		return $transportsMapping;
 	}
 
-	public function getSerializer(string|Statement|null $serializer): Statement|string
+	/**
+	 * @param string|Statement|null $serializer
+	 * @return Statement|string
+	 */
+	public function getSerializer($serializer)
 	{
 		if ($serializer === null) {
 			return $this->pass->prefix('@serializer.default');

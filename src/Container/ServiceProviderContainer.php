@@ -5,9 +5,6 @@ namespace Contributte\Messenger\Container;
 use Nette\DI\Container;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
-/**
- * @implements ServiceProviderInterface<object>
- */
 class ServiceProviderContainer implements ServiceProviderInterface
 {
 

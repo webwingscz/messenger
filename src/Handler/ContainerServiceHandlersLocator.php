@@ -66,7 +66,7 @@ class ContainerServiceHandlersLocator implements HandlersLocatorInterface
 	 */
 	protected function listTypes(Envelope $envelope): array
 	{
-		$class = $envelope->getMessage()::class;
+		$class = get_class($envelope->getMessage());
 
 		return [$class => $class]
 			+ class_parents($class)
@@ -92,6 +92,7 @@ class ContainerServiceHandlersLocator implements HandlersLocatorInterface
 
 	protected function shouldHandle(Envelope $envelope, HandlerDescriptor $handlerDescriptor): bool
 	{
+		/** @var ReceivedStamp|null $received */
 		$received = $envelope->last(ReceivedStamp::class);
 
 		if ($received === null) {

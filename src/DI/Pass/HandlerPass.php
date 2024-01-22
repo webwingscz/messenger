@@ -126,9 +126,6 @@ class HandlerPass extends AbstractPass
 		$serviceHandlers = array_merge($serviceHandlers, array_keys($builder->findByType(MessageHandlerInterface::class)));
 
 		foreach ($builder->getDefinitions() as $definition) {
-			/** @var class-string $class */
-			$class = $definition->getType();
-
 			// Skip definitions without type
 			if ($definition->getType() === null) {
 				continue;
@@ -136,11 +133,6 @@ class HandlerPass extends AbstractPass
 
 			// Skip definitions without name
 			if ($definition->getName() === null) {
-				continue;
-			}
-
-			// Skip services without attribute
-			if (Reflector::getMessageHandler($class) === null) {
 				continue;
 			}
 

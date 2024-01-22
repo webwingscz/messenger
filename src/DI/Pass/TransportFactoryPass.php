@@ -6,7 +6,6 @@ use Contributte\Messenger\DI\MessengerExtension;
 use Contributte\Messenger\DI\Utils\BuilderMan;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpTransportFactory;
 use Symfony\Component\Messenger\Bridge\Redis\Transport\RedisTransportFactory;
-use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransportFactory;
 use Symfony\Component\Messenger\Transport\Sync\SyncTransportFactory;
 use Symfony\Component\Messenger\Transport\TransportFactory;
 
@@ -15,7 +14,6 @@ class TransportFactoryPass extends AbstractPass
 
 	public const DEFAULT_TRANSPORT_FACTORY = [
 		'sync' => SyncTransportFactory::class,
-		'inMemory' => InMemoryTransportFactory::class,
 		'amqp' => AmqpTransportFactory::class,
 		'redis' => RedisTransportFactory::class,
 	];

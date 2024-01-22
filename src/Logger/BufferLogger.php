@@ -12,11 +12,11 @@ class BufferLogger extends AbstractLogger
 	private array $logs = [];
 
 	/**
-	 * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+	 * @param mixed $level
 	 * @param string|Stringable $message
 	 * @param mixed[] $context
 	 */
-	public function log(mixed $level, $message, array $context = []): void
+	public function log($level, $message, array $context = []): void
 	{
 		$this->logs[] = ['level' => $level, 'message' => $message, 'context' => $context];
 	}
