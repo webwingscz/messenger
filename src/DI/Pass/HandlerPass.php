@@ -110,20 +110,6 @@ class HandlerPass extends AbstractPass
 		$serviceHandlers = array_merge($serviceHandlers, array_keys($builder->findByTag(MessengerExtension::HANDLER_TAG)));
 		$serviceHandlers = array_merge($serviceHandlers, array_keys($builder->findByType(MessageHandlerInterface::class)));
 
-		foreach ($builder->getDefinitions() as $definition) {
-			// Skip definitions without type
-			if ($definition->getType() === null) {
-				continue;
-			}
-
-			// Skip definitions without name
-			if ($definition->getName() === null) {
-				continue;
-			}
-
-			$serviceHandlers[] = $definition->getName();
-		}
-
 		// Clean duplicates
 		return array_unique($serviceHandlers);
 	}
