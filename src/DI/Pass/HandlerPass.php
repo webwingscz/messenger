@@ -6,11 +6,8 @@ use Contributte\Messenger\DI\MessengerExtension;
 use Contributte\Messenger\DI\Utils\Reflector;
 use Contributte\Messenger\Exception\LogicalException;
 use Nette\DI\Definitions\ServiceDefinition;
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionException;
-use stdClass;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class HandlerPass extends AbstractPass
@@ -47,13 +44,14 @@ class HandlerPass extends AbstractPass
 
 				// Ensure handler class exists
 				try {
-					$rc = new ReflectionClass($serviceClass);
+					new ReflectionClass($serviceClass);
 				} catch (ReflectionException $e) {
 					throw new LogicalException(sprintf('Handler "%s" class not found', $serviceClass), 0, $e);
 				}
 
 				// Drain service tag
 				$tag = (array) $serviceDef->getTag(MessengerExtension::HANDLER_TAG);
+				/** @var array{bus: string|null, alias: string|null, method: string|null, handles: string|null, priority: numeric|null, from_transport: string|null} $tagOptions */
 				$tagOptions = [
 					'bus' => $tag['bus'] ?? null,
 					'alias' => $tag['alias'] ?? null,
@@ -63,28 +61,15 @@ class HandlerPass extends AbstractPass
 					'from_transport' => $tag['from_transport'] ?? null,
 				];
 
-				// Drain service attribute
-				/** @var array<ReflectionAttribute<AsMessageHandler>> $attributes */
-				$attributes = $rc->getAttributes(AsMessageHandler::class);
-				/** @var AsMessageHandler $attributeHandler */
-				$attributeHandler = isset($attributes[0]) ? $attributes[0]->getArguments() : new stdClass();
-				$attributeOptions = [
-					'bus' => $attributeHandler['bus'] ?? null,
-					'method' => $attributeHandler['method'] ?? null,
-					'priority' => $attributeHandler['priority'] ?? null,
-					'handles' => $attributeHandler['handles'] ?? null,
-					'from_transport' => $attributeHandler['fromTransport'] ?? null,
-				];
-
 				// Complete final options
 				$options = [
 					'service' => $serviceName,
-					'bus' => $tagOptions['bus'] ?? $attributeOptions['bus'] ?? $busName,
+					'bus' => $tagOptions['bus'] ?? $busName,
 					'alias' => $tagOptions['alias'] ?? null,
-					'method' => $tagOptions['method'] ?? $attributeOptions['method'] ?? '__invoke',
-					'handles' => $tagOptions['handles'] ?? $attributeOptions['handles'] ?? null,
-					'priority' => $tagOptions['priority'] ?? $attributeOptions['priority'] ?? 0,
-					'from_transport' => $tagOptions['from_transport'] ?? $attributeOptions['from_transport'] ?? null,
+					'method' => $tagOptions['method'] ?? '__invoke',
+					'handles' => $tagOptions['handles'] ?? null,
+					'priority' => $tagOptions['priority'] ?? 0,
+					'from_transport' => $tagOptions['from_transport'] ?? null,
 				];
 
 				// Autodetect handled message
@@ -93,7 +78,7 @@ class HandlerPass extends AbstractPass
 				}
 
 				// If handler is not for current bus, then skip it
-				if (($tagOptions['bus'] ?? $attributeOptions['bus'] ?? $busName) !== $busName) {
+				if (($tagOptions['bus'] ?? $busName) !== $busName) {
 					continue;
 				}
 
