@@ -1,5 +1,5 @@
 {
-    "name": "contributte/messenger",
+    "name": "webwingscz/messenger",
     "description": "Best Symfony Messenger for Nette framework",
     "keywords": [
         "nette",
@@ -59,11 +59,6 @@
         "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.2.x-dev"
         }
     }
 }
